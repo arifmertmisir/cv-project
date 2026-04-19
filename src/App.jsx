@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Button from './components/Button.jsx'
 import Input from './components/Input.jsx'
+import './styles/App.css'
 
 
 function App() {
@@ -19,7 +20,9 @@ function App() {
   const [companyDateFrom, setCompanyDateFrom] = useState('');
   const [companyDateUntil, setCompanyDateUntil] = useState('');
 
-  const [submit, setIsSubmitted] = useState(false);
+  const [personalSubmit, setPersonalSubmit] = useState(false);
+  const [educationSubmit, setEducationSubmit] = useState(false);
+  const [experienceSubmit, setExperienceSubmit] = useState(false);
 
   function onNameChange(e) {
     setName(e.target.value);
@@ -69,17 +72,9 @@ function App() {
     setCompanyDateUntil(e.target.value);
   }
 
-  function onSubmit() {
-    setIsSubmitted(true);
-  }
-
-  function onEdit() {
-    setIsSubmitted(false);
-  }
-
   return (
     <>
-      <div>
+      <div className='header'>
         <h1>CV Project</h1>
       </div>
 
@@ -87,36 +82,42 @@ function App() {
           <h2>
           Personal Information
           </h2>
-          <Input label="Name" value={name} onChange={onNameChange} disabled={submit}/>
-          <Input label="Email" value={email} onChange={onEmailChange} disabled={submit} />
-          <Input label="Phone" value={phone} onChange={onPhoneChange} disabled={submit} />
-          <br />
+          <div>
+            {personalSubmit ? <p>{name}</p> : <Input label="Name" value={name} onChange={onNameChange} />}        
+            {personalSubmit ? <p>{email}</p> : <Input label="Email" value={email} onChange={onEmailChange} />}          
+            {personalSubmit ? <p>{phone}</p> : <Input label="Phone" value={phone} onChange={onPhoneChange} />}          
+          </div>
+          <Button label="Submit" onClick={() => setPersonalSubmit(true)} disabled={personalSubmit} />
+          <Button label="Edit" onClick={() => setPersonalSubmit(false)} disabled={!personalSubmit} />
       </section>
       <hr />  
       <section>
         <h2>
           Education
         </h2>
-        <Input label="School Name" value={schoolName} onChange={onSchoolNameChange} disabled={submit}/>
-        <Input label="Title of Study" value={titleOfStudy} onChange={onTitleOfStudyChange} disabled={submit}/>
-        <Input label="Date From" value={dateFrom} onChange={onDateFromChange} disabled={submit}/>
-        <Input label="Date Until" value={dateUntil} onChange={onDateUntilChange} disabled={submit}/>
-        <br />
+        <div>
+          {educationSubmit ? <p>{schoolName}</p> : <Input label="School Name" value={schoolName} onChange={onSchoolNameChange} />}
+          {educationSubmit ? <p>{titleOfStudy}</p> : <Input label="Title of Study" value={titleOfStudy} onChange={onTitleOfStudyChange} />}
+          {educationSubmit ? <p>{dateFrom}</p> : <Input label="Date From" value={dateFrom} onChange={onDateFromChange} />}
+          {educationSubmit ? <p>{dateUntil}</p> : <Input label="Date Until" value={dateUntil} onChange={onDateUntilChange}/>}
+        </div>
+        <Button label="Submit" onClick={() => setEducationSubmit(true)} disabled={educationSubmit} />
+        <Button label="Edit" onClick={() => setEducationSubmit(false)} disabled={!educationSubmit}/>
       </section>   
       <hr />  
       <section>   
         <h2>
           Professional Experience
         </h2>
-        <Input label="Company Name" value={companyName} onChange={onCompanyNameChange} disabled={submit}/>
-        <Input label="Position" value={position} onChange={onPositionChange} disabled={submit}/>
-        <Input label="Responsibilities" value={responsibilities} onChange={onResponsibilitiesChange} disabled={submit}/>
-        <Input label="Date From" value={companyDateFrom} onChange={onCompanyDateFromChange} disabled={submit}/>
-        <Input label="Date Until" value={companyDateUntil} onChange={onCompanyDateUntilChange} disabled={submit}/>
-        <br />
-        <br />
-        <Button label="Submit" onClick={onSubmit} />
-        <Button label="Edit" onClick={onEdit}/>
+        <div>
+          {experienceSubmit ? <p>{companyName}</p> : <Input label="Company Name" value={companyName} onChange={onCompanyNameChange} />}
+          {experienceSubmit ? <p>{position}</p> : <Input label="Position" value={position} onChange={onPositionChange}/>}
+          {experienceSubmit ? <p>{responsibilities}</p> : <Input label="Responsibilities" value={responsibilities} onChange={onResponsibilitiesChange} />}
+          {experienceSubmit ? <p>{companyDateFrom}</p> : <Input label="Date From" value={companyDateFrom} onChange={onCompanyDateFromChange} />}
+          {experienceSubmit ? <p>{companyDateUntil}</p> : <Input label="Date Until" value={companyDateUntil} onChange={onCompanyDateUntilChange} />}
+        </div>
+        <Button label="Submit" onClick={() => setExperienceSubmit(true)} disabled={experienceSubmit} />
+        <Button label="Edit" onClick={() => setExperienceSubmit(false)} disabled={!experienceSubmit} />
       </section>
     </>
   );
