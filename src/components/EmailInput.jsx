@@ -4,6 +4,7 @@ export default function EmailInput({
   value,
   onChange,
   required = false,
+  error
 }) {
   return (
     <label>
@@ -15,6 +16,7 @@ export default function EmailInput({
         onChange={onChange}
         required={required}
       />
+      {error && <span style={{ color: 'red', fontSize: '0.8em' }}>{error}</span>}
     </label>
   );
 }
