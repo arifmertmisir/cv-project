@@ -134,4 +134,89 @@ describe("App", () => {
     expect(screen.getByText(experience.dateFrom)).toBeInTheDocument();
     expect(screen.getByText(experience.dateUntil)).toBeInTheDocument();
   });
+
+  it("Displays error message when Email input field is empty", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    const submissions = screen.getAllByRole("button", { name: "Submit" });
+    await user.click(submissions[0]);
+
+    expect(
+      screen.getByText(/Please enter a valid email address./i),
+    ).toBeInTheDocument();
+  });
+
+  it("Displays error message when Email input field is invalid", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.type(screen.getByLabelText(/email/i), "testmantester.mail.com");
+
+    const submissions = screen.getAllByRole("button", { name: "Submit" });
+    await user.click(submissions[0]);
+
+    expect(
+      screen.getByText(/Please enter a valid email address./i),
+    ).toBeInTheDocument();
+  });
+
+  it("Displays error message when Phone input field is empty", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.type(screen.getByLabelText(/email/i), "testmantester@mail.com");
+
+    const submissions = screen.getAllByRole("button", { name: "Submit" });
+    await user.click(submissions[0]);
+
+    expect(
+      screen.getByText(/Please enter a valid phone number./i),
+    ).toBeInTheDocument();
+  });
+
+  it("displays error message when phone format is invalid", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.type(screen.getByLabelText(/email/i), "testmantester@mail.com");
+    await user.type(screen.getByLabelText(/phone/i), "test");
+
+    const submitButtons = screen.getAllByRole("button", { name: "Submit" });
+    await user.click(submitButtons[0]);
+
+    expect(
+      screen.getByText(/please enter a valid phone number/i),
+    ).toBeInTheDocument();
+  });
+
+  it("displays error message when Education Date From field is greater than Education Date Until field", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.type(screen.getAllByLabelText(/date from/i)[0], "2026-01-01");
+    await user.type(screen.getAllByLabelText(/date until/i)[0], "2025-12-31");
+
+    const submitButtons = screen.getAllByRole("button", { name: "Submit" });
+    await user.click(submitButtons[1]);
+
+    expect(
+      screen.getAllByText(/Please enter a valid date./i)[0],
+    ).toBeInTheDocument();
+  });
+
+  it("displays error message when Experience Date From field is greater than Experience Date Until field", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.type(screen.getAllByLabelText(/date from/i)[1], "2026-01-01");
+    await user.type(screen.getAllByLabelText(/date until/i)[1], "2025-12-31");
+
+    const submitButtons = screen.getAllByRole("button", { name: "Submit" });
+    await user.click(submitButtons[2]);
+
+    expect(
+      screen.getAllByText(/Please enter a valid date./i)[1],
+    ).toBeInTheDocument();
+  });
 });
