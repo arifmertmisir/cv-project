@@ -1,19 +1,40 @@
 import { useState } from "react";
-import Button from "./components/Button.jsx";
-import TextInput from "./components/TextInput.jsx";
-import EmailInput from "./components/EmailInput.jsx";
-import DateInput from "./components/DateInput.jsx";
+import Button from "./components/Button.tsx";
+import TextInput from "./components/TextInput.tsx";
+import EmailInput from "./components/EmailInput.tsx";
+import DateInput from "./components/DateInput.tsx";
 import "./styles/App.css";
 
+type Personal = {
+  name:string,
+  email:string,
+  phone:string 
+}
+
+type Education = {
+  schoolName:string,
+  titleOfStudy:string,
+  dateFrom:string,
+  dateUntil:string,
+}
+
+type Experience = {
+  companyName:string,
+  position:string,
+  responsibilities:string,
+  companyDateFrom:string,
+  companyDateUntil:string,
+}
+
 export default function App() {
-  const [personal, setPersonal] = useState({ name: "", email: "", phone: "" });
-  const [education, setEducation] = useState({
+  const [personal, setPersonal] = useState<Personal>({name: "", email: "", phone: ""  });
+  const [education, setEducation] = useState<Education>({
     schoolName: "",
     titleOfStudy: "",
     dateFrom: "",
     dateUntil: "",
   });
-  const [experience, setExperience] = useState({
+  const [experience, setExperience] = useState<Experience>({
     companyName: "",
     position: "",
     responsibilities: "",
@@ -21,37 +42,37 @@ export default function App() {
     companyDateUntil: "",
   });
 
-  const [personalSubmit, setPersonalSubmit] = useState(false);
-  const [educationSubmit, setEducationSubmit] = useState(false);
-  const [experienceSubmit, setExperienceSubmit] = useState(false);
+  const [personalSubmit, setPersonalSubmit] = useState<boolean>(false);
+  const [educationSubmit, setEducationSubmit] = useState<boolean>(false);
+  const [experienceSubmit, setExperienceSubmit] = useState<boolean>(false);
 
-  const [emailError, setEmailError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const [educationDateError, setEducationDateError] = useState("");
-  const [companyDateError, setCompanyDateError] = useState("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [phoneError, setPhoneError] = useState<string>("");
+  const [educationDateError, setEducationDateError] = useState<string>("");
+  const [companyDateError, setCompanyDateError] = useState<string>("");
 
-  function handlePersonalChange(e) {
+  function handlePersonalChange(e: React.ChangeEvent<HTMLInputElement>):void {
     const { name, value } = e.target;
-    setPersonal((prev) => ({ ...prev, [name]: value }));
+    setPersonal((prev:Personal):Personal => ({ ...prev, [name]: value }));
   }
 
-  function handleEducationChange(e) {
+  function handleEducationChange(e: React.ChangeEvent<HTMLInputElement>):void {
     const { name, value } = e.target;
-    setEducation((prev) => ({ ...prev, [name]: value }));
+    setEducation((prev:Education):Education => ({ ...prev, [name]: value }));
   }
 
-  function handleExperienceChange(e) {
+  function handleExperienceChange(e: React.ChangeEvent<HTMLInputElement>):void {
     const { name, value } = e.target;
-    setExperience((prev) => ({ ...prev, [name]: value }));
+    setExperience((prev:Experience):Experience => ({ ...prev, [name]: value }));
   }
 
-  function handlePersonalSubmit() {
+  function handlePersonalSubmit():void {
     if (!personal.email.includes("@")) {
       setEmailError("Please enter a valid email address.");
       return;
     }
 
-    const phoneRegex = /^[0-9+\- ]+$/;
+    const phoneRegex:RegExp = /^[0-9+\- ]+$/;
     if (!phoneRegex.test(personal.phone)) {
       setPhoneError("Please enter a valid phone number.");
       return;
@@ -62,7 +83,7 @@ export default function App() {
     setPersonalSubmit(true);
   }
 
-  function handleEducationSubmit() {
+  function handleEducationSubmit():void {
     if (education.dateFrom > education.dateUntil) {
       setEducationDateError("Please enter a valid date.");
       return;
@@ -72,7 +93,7 @@ export default function App() {
     setEducationSubmit(true);
   }
 
-  function handleExperienceSubmit() {
+  function handleExperienceSubmit():void {
     if (experience.companyDateFrom > experience.companyDateUntil) {
       setCompanyDateError("Please enter a valid date.");
       return;
