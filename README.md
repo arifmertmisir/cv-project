@@ -1,16 +1,54 @@
-# React + Vite
+# 📄 CV Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive CV/resume builder built with React and TypeScript — fill in your personal, education, and work experience details through a form, with live validation and an edit/submit flow for each section.
 
-Currently, two official plugins are available:
+**[Live Demo](https://cv-project-azure.vercel.app/)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- **Three-section form** — Personal Information, Education, and Professional Experience, each independently submittable and editable
+- **Live validation** — email format and phone number validation on Personal Information; date range validation (from ≤ until) on Education and Experience sections
+- **Submit/Edit toggle** — each section locks into a read-only summary view after submission, with an Edit button to unlock and revise
+- **Reusable, typed form components** — `TextInput`, `EmailInput`, `DateInput`, and `Button` components with typed props, shared across all three sections
+- **Fully typed with TypeScript** — form state (`Personal`, `Education`, `Experience`), event handlers, and component props are typed end-to-end
+- **Styled with Tailwind CSS**
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- **React** (Vite) + **TypeScript**
+- **Tailwind CSS** — styling
+- **Vitest** + **React Testing Library** — component testing
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Project Structure
+
+```
+src/
+  components/      # reusable form components (Button, TextInput, EmailInput, DateInput)
+  styles/          # global styles
+  App.tsx          # main form logic — state, validation, and layout
+  App.test.jsx     # component tests
+  main.tsx         # app entry point
+tests/
+  setup.js         # test environment setup         # component tests
+```
+
+## How It Works
+
+- **`App.tsx`** holds three separate pieces of state (`personal`, `education`, `experience`), each typed with its own interface, along with a "submitted" boolean per section to control the view/edit toggle.
+- Each form field is a reusable, typed component (`TextInput`, `EmailInput`, `DateInput`) that receives its value, change handler, and optional validation error as props.
+- On submit, each section runs its own validation (email format, phone format, date range) before locking the section and switching to a read-only summary view.
+
+## Running Locally
+
+```bash
+git clone https://github.com/arifmertmisir/cv-project.git
+cd cv-project
+npm install
+npm run dev
+```
+
+## Running Tests
+
+```bash
+npm run test
+```
